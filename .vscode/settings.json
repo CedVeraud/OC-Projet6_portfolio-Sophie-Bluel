@@ -1,3 +1,7 @@
 { 
-    "liveServer.settings.ignoreFiles": ["Backend/**"] 
+    "liveServer.settings.ignoreFiles": [
+        "Backend/**"
+    ],
+    "markdown.validate.enabled": true,
+    "liveServer.settings.port": 5501
 }
