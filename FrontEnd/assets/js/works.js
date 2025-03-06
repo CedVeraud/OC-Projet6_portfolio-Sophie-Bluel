@@ -1,31 +1,81 @@
 const UrlApi = "http://localhost:5678/api/";
+const btn_tous = document.getElementById("btn_tous");
 const gallery = document.querySelector(".gallery");
 
-// Afficher les informations
-function infos(work) {
-    // Créer une balise figure pour chaque projet
-    const card = `
-      <figure id ="P${work?.id}" >
-      <img src="${work?.imageUrl} "crossOrigin="anonymous">
-        <figcaption>${work?.title}</figcaption>
-      </figure>
-            `;
-    // Ajouter chaque élément à la galerie
-    document.querySelector(".gallery").insertAdjacentHTML("beforeend", card);
+// Show gallery informations
+function info(work) {
+  // Create a figure element for each work
+  const card = `
+    <figure id ="P${work?.id}" >
+    <img src="${work?.imageUrl} "crossOrigin="anonymous">
+      <figcaption>${work?.title}</figcaption>
+    </figure>
+  `;
+  // Add card to the gallery element
+  document.querySelector(".gallery").insertAdjacentHTML("beforeend", card);
 }
 
-function afficheGalerie() {
-   fetch(`${UrlApi}works`).then((resp) => {
-    if (resp.ok) {
+function showGallery() {
+  fetch(`${UrlApi}works`).then((resp) => {
+    if (resp.ok)                     {
       resp.json().then((data) => {
-        document.querySelector(".gallery").innerHTML = ""; // Effacement de l'élément HTML .gallery
-        // Boucle pour afficher tous les projets
+        // clear gallery
+        document.querySelector(".gallery").innerHTML = "";
+        // Loop to display all projects
         for (let i = 0; i <= data.length - 1; i++) {
-          infos(data[i]); // Appel de la fonction info pour afficher les informations de chaque projet
+          // Call informations for each work
+          info(data[i]);
         }
-        console.log(data);
       });
     }
   });
 }
-afficheGalerie();
+
+///// CATEGORY FILTERS ////
+// Select all works to display
+btn_tous.checked = true;
+btn_tous.addEventListener("click", showGallery);
+// Get the full gallery
+fetch(`${UrlApi}works`).then((resp) => {
+  if (resp.ok) {
+    resp.json().then((data) => {
+      // Get the total of projects
+      const nbSlides = data.length;
+      // Get the full list of categories
+      fetch(`${UrlApi}categories`).then((resp) => {
+        if (resp.ok) {
+          // Create a button for each category
+          resp.json().then((category) => {
+            // Create an radio input (hidden)
+            for (let count = 0; count <= category.length - 1; count++) {
+              const object = document.createElement("input");
+              object.type = "radio";
+              object.id = category[count].name;
+              object.name = "worksFilters"
+              // Create a label (button)
+              const objectLabel = document.createElement("button");
+              objectLabel.className = "btn_option"
+              objectLabel.innerHTML = `<label for="${category[count]?.name}">${category[count]?.name}</label>`;
+              objectLabel.onclick = function () {                                 
+                // Clear gallery
+                document.querySelector(".gallery").innerHTML = "";
+                // Show projects in the selected category
+                for (let i = 0; i <= nbSlides; i++) {
+                  if (data[i]?.category.name === category[count].name) {
+                    info(data[i]);
+                  }
+                }
+              };
+              // Display filters buttons
+              const button = document.getElementById("filterSelect");
+              button.appendChild(object);
+              button.appendChild(objectLabel);
+            }
+          });
+        }
+      });
+    });
+  }
+});
+// 
+showGallery(); 

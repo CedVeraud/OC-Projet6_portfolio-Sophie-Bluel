@@ -137,9 +137,55 @@ li:hover {
 	width: 100%;
 
 }
+/* filters gallery */
+#filterSelect {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	column-gap: 15px;
+	margin: 60px 0;
+}
+
+.btn_option label {
+height: 37px;
+background: white;
+border: 1px solid #1d6154;
+border-radius: 60px;
+color: #1d6154;
+cursor: pointer;
+width: auto;
+box-sizing: border-box;
+padding: 8px 18px;
+font-family: 'Syne';
+font-size: 16px;
+font-weight: 700;
+line-height: 19px;
+text-align: center;
+font-style: normal;
+}
+
+.btn_option label:hover,
+#filterSelect input:checked + .btn_option label,
+#btn_tous:checked {
+background: #1d6154;
+color: white;
+}
+
+#filterSelect button{
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	text-decoration: none;
+	display: inline-block;
+}
+#filterSelect input{
+	display: none;
+}
+/* end filters */
+
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
