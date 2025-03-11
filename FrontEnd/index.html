@@ -7,17 +7,26 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<meta name="description" content="">
+	<meta name="description" content="">	
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+<aside id="editMode">
+	<a href="#portfolio" class="admin_edit-btn hidden" aria-hidden="true">
+		<i class="fa-solid fa-pen-to-square"></i>
+		<span>Mode édition</span>
+	</a>
+</aside>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
+			<li><a href="#portfolio">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li><a href="./login.html" id="log">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -35,12 +44,18 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="works_title">
+			<h2>Mes Projets</h2>
+			<a href="#modal" class="admin_modif-btn hidden" aria-hidden="true">
+				<i class="fa-solid fa-pen-to-square"></i>
+				<span>Modifier</span>
+			</a>
+		</div>
 		<div id="filterSelect">
-			<input type="radio" id="btn_tous" name="worksFilters">
-			<button class="btn_option">
-				<label for="btn_tous">Tous</label>
-			</button>
+			<input type="radio" id="btn_all" name="worksFilters">
+			<div class="btn_option">
+				<label class="selectBtn" for="btn_all">Tous</label>
+			</div>
 		</div>
 		<div class="gallery"></div>
 	</section>
@@ -66,7 +81,7 @@
 		</ul>
 	</nav>
 </footer>
-<!-- Chargement du fichier JavaScript pour la page d'index -->
 <script src="./assets/js/works.js"></script>
+<script src="./assets/js/admin.js"></script>
 </body>
 </html>

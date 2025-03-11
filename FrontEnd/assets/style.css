@@ -23,6 +23,10 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+a {
+	text-decoration: none;
+	color: black;
+}
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -52,11 +56,12 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #fffef8;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 60px 0
 }
 section {
 	margin: 50px 0
@@ -95,7 +100,11 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+nav li a{
+	text-decoration: none;
+	color:black;
+}
+nav li a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -121,10 +130,6 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
 .gallery {
 	width: 100%;
 	display: grid;
@@ -137,6 +142,41 @@ li:hover {
 	width: 100%;
 
 }
+/* ADMIN MODE */
+.works_title {
+	display:flex;
+	flex-flow: row nowrap;
+	justify-content:center;
+	padding-top: 120px;
+}
+#filterSelect.hidden .btn_option,
+.admin_modif-btn.hidden,
+.admin_edit-btn.hidden {
+	display: none;
+}
+.admin_modif-btn,
+.admin_edit-btn {
+	display: block;
+	margin: 8px 30px;
+}
+.admin_edit-btn,
+.admin_edit-btn a {
+	color: white;
+}
+#editMode {
+	position: fixed;
+	width: 100%;
+	height: 50px;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left:0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/*column-gap: 22px;*/
+}
+
 /* filters gallery */
 #filterSelect {
 	display: flex;
@@ -148,7 +188,7 @@ li:hover {
 
 .btn_option label {
 height: 37px;
-background: white;
+background: transparent;
 border: 1px solid #1d6154;
 border-radius: 60px;
 color: #1d6154;
@@ -166,7 +206,7 @@ font-style: normal;
 
 .btn_option label:hover,
 #filterSelect input:checked + .btn_option label,
-#btn_tous:checked {
+#btn_all:checked {
 background: #1d6154;
 color: white;
 }
@@ -181,33 +221,33 @@ color: white;
 #filterSelect input{
 	display: none;
 }
-/* end filters */
-
-#contact {
+/* /end filters */
+/* FORMULAIRES */
+#contact, #login {
 	width: 50%;
 	margin: auto;
 }
-#contact > * {
+#contact, #login > * {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2, #login h2{
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form, #login form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input, #login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label, #login label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -224,6 +264,11 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+#error {
+	text-align: center;
+	color:#B1663C;
+	font-size: 16px;
 }
 
 footer nav ul {
