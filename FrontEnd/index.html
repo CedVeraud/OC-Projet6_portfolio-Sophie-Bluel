@@ -13,7 +13,18 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
-<body>
+<body>	
+<aside id="modal1" class="modal hidden" aria-hidden="true">
+	<div class="modal-wrapper">
+		<button class="close-modal">x</button>
+		<h3>Galerie photos</h3>
+		<div class="modal-page">
+			<div class="modal-gallery"></div>
+			<hr>
+		</div>
+
+	</div>
+</aside>
 <aside id="editMode">
 	<a href="#portfolio" class="admin_edit-btn hidden" aria-hidden="true">
 		<i class="fa-solid fa-pen-to-square"></i>
@@ -32,7 +43,7 @@
 	</nav>
 </header>
 <main>
-	<section id="introduction">
+	<div id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
 		</figure>
@@ -42,7 +53,7 @@
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
-	</section>
+	</div>
 	<section id="portfolio">
 		<div class="works_title">
 			<h2>Mes Projets</h2>

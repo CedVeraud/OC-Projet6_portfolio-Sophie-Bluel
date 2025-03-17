@@ -1,11 +1,14 @@
 const UrlApi = "http://localhost:5678/api/";
+const callData = fetch(`${UrlApi}works`);
+const callCat = fetch(`${UrlApi}categories`);
+let allWorks = [];
 
 ////// GALLERY ///////
 const gallery = document.querySelector(".gallery");
 // Create gallery elements
 function displayWork(work) {
   const card = `
-    <figure id ="P${work?.id}" >
+    <figure id="P${work?.id}" >
     <img src="${work?.imageUrl} "crossOrigin="anonymous">
       <figcaption>${work?.title}</figcaption>
     </figure>
@@ -13,31 +16,25 @@ function displayWork(work) {
   gallery.insertAdjacentHTML("beforeend", card);
 }
 // Display array content
-function getAllWorks() {
-  fetch(`${UrlApi}works`).then((resp) => {
-    if (resp.ok){
-      resp.json().then((data) => {
-        gallery.innerHTML = "";
-        for (let i = 0; i <= data.length - 1; i++) {
-          displayWork(data[i]);
-        }      
-      });
-    }
-  });
+function displayAllWorks(data) {
+  gallery.innerHTML = "";
+  for (let i = 0; i <= data.length - 1; i++) {
+    displayWork(data[i]);
+  }        
 }
 
 ///// CATEGORY FILTERS /////
-const callData = fetch(`${UrlApi}works`);
-const callCat = fetch(`${UrlApi}categories`);
-
 callData.then((resp) => {
   if (resp.ok){
     resp.json().then((data) => {
-      getCat(data);    
+      displayAllWorks(data);
+      getCat(data);
+      allWorks = data;   
     });
   }
 });
 
+// build filters buttons
 function getCat(data){
   const nbSlides = data.length;
   callCat.then((resp) => {
@@ -73,11 +70,9 @@ function getCat(data){
     }
   });
 };
-
 // Select ALL WORKS
 const AllBtn = document.getElementById("btn_all");
 AllBtn.checked = true;
-AllBtn.addEventListener("click", getAllWorks);
-
-// display ALL WORKS
-getAllWorks();
+AllBtn.addEventListener("click", () => {
+  displayAllWorks(allWorks);
+});
