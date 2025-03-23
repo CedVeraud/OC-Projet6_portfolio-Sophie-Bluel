@@ -1,3 +1,7 @@
+
+///////////////////////////
+/////// ADMIN MODE ///////
+/////////////////////////
 const token = sessionStorage.getItem("token");
 
 // LOGOUT //
@@ -7,22 +11,24 @@ function logOut() {
   // reload default page
   logMenu.href = "";
 };
-// Advice //
+// Advice if button "modifier" is not hidden //
 function forbidden() {
   alert("Vous devez vous connecter");
 };
-
-// LOGIN - Admin mode //
+/////////////////////////////////////
+/////// LOGIN --> Admin mode ///////
+///////////////////////////////////
 const logMenu = document.getElementById("log");
 const modifBtn = document.querySelector(".admin_modif-btn");
 const editBtn = document.querySelector(".admin_edit-btn");
+const editMode = document.getElementById("editMode");
 
-if (sessionStorage.getItem("token")) {
+if (token) {
   logMenu.innerText = "logout";
   logMenu.href = "#";
   logMenu.addEventListener("click", logOut);
   document.getElementById("filterSelect").classList.add("hidden");
-  document.getElementById("editMode").style.backgroundColor = "black";
+  editMode.classList.add("bg-black");;
   editBtn.classList.remove("hidden");
   modifBtn.classList.remove("hidden");
   modifBtn.addEventListener("click", (e) => {
@@ -39,20 +45,26 @@ if (sessionStorage.getItem("token")) {
   console.log("disconnected");
 };
 
+///////////////////////////////
 /////// DISPLAY MODALE ///////
-const modalWindow = document.getElementById("modal1");
-const modalWrapper = document.querySelector(".modal-wrapper");
+/////////////////////////////
+let modalWindow = document.getElementById("modal1");
+const modalWrapper = document.querySelector(".modal_wrapper");
 const modalCloseBtn = document.querySelector(".close-modal");
-const modalGallery = document.querySelector(".modal-gallery");
+const modalGallery = document.querySelector(".modal_gallery");
 
 function openModal() {
   modalWindow.classList.remove("hidden");
   getModalWorks();
 };
 function closeModal() {
+  document.getElementById("addPictureForm").reset();
+  resetPicturePreview();
+  resetSubmitBtnColor();
+  switchModalPage1();
   modalWindow.classList.add("hidden");
 };
-const stopProp = function(e) {
+function stopProp(e) {
   e.stopPropagation();
 };
 // listen close modal buttons
@@ -60,7 +72,11 @@ modalWindow.addEventListener("click", closeModal);
 modalCloseBtn.addEventListener("click", closeModal);
 modalWrapper.addEventListener("click", stopProp);
 
-// Create modal-gallery elements
+/////////////////////////////////////////
+/////// Display gallery in MODAL ///////
+///////////////////////////////////////
+
+// Create modal_gallery elements
 function displayModalWork(work) {
   const MGcard = `
     <figure id ="MP${work?.id}" class="modale-project">
@@ -80,14 +96,16 @@ function getModalWorks() {
     // LISTEN DELETE BTN
     let deleteBtn = document.querySelectorAll(".delete-project");
     deleteBtn[i].addEventListener("click", () => {
-      console.log(deleteBtn[i])
       deleteProject(allWorks[i].id);
     });    
   }      
 };
-// Supprimer le projet
+
+///////////////////////////////
+/////// DELETE project ///////
+/////////////////////////////
 function deleteProject(i) {
-  fetch(`http://localhost:5678/api/works/${i}`, {
+  fetch(`${UrlApi}works/${i}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}`},
   })
@@ -99,7 +117,7 @@ function deleteProject(i) {
     }
     // si statut ok
     else {
-      console.log("projet " + `${i}` + " supprimé");
+      alert("projet " + `${i}` + " supprimé");
       // rafraichir la page    
       allWorks = allWorks.filter(function(item) {
         return item.id !== i;
@@ -109,3 +127,142 @@ function deleteProject(i) {
     };
   });
 };
+
+///////////////////////////////////
+/////// switch modal PAGES ///////
+/////////////////////////////////
+const addBtn = document.querySelector(".btn_add");
+const backBtn = document.querySelector(".back-modal");
+const modalArticle1 = document.querySelector(".modal_article1");
+const modalArticle2 = document.querySelector(".modal_article2");
+
+function switchModalPage1() {
+  modalArticle1.classList.remove("hidden");
+  backBtn.classList.add("hidden");
+  modalArticle2.classList.add("hidden");
+}
+function switchModalPage2() {
+  modalArticle1.classList.add("hidden");
+  backBtn.classList.remove("hidden");
+  modalArticle2.classList.remove("hidden");
+}
+addBtn.addEventListener("click", switchModalPage2);
+backBtn.addEventListener("click", switchModalPage1); 
+
+////////////////////////////
+/////// ADD project ///////
+//////////////////////////
+let pictureInput;
+pictureInput = document.querySelector("#photo");
+
+//preview picture in form
+const prevImage = document.querySelector("#picturePreviewImg");
+const prevPic = document.querySelector("#picturePreview");
+const PicForm = document.querySelector(".modal_form-photo");
+
+function picturePreview() {
+  const [file] = pictureInput.files;
+  if (file) {
+    prevImage.src = URL.createObjectURL(file);
+    prevPic.classList.remove("hidden");
+    PicForm.classList.add("hidden");
+  }
+}
+function resetPicturePreview() {
+  prevPic.classList.add("hidden");
+  PicForm.classList.remove("hidden");
+}
+pictureInput.addEventListener("change", () => {
+  picturePreview();
+});
+
+// change submit button color if form is completed
+const validateBtn = document.querySelector(".add-work");
+const form = document.getElementById("addPictureForm");
+
+form.addEventListener("change", () => {
+  changeSubmitBtnColor();
+});
+
+function changeSubmitBtnColor(){
+  if (document.getElementById("titre").value !== "" && document.getElementById("photo").files[0] !== undefined && document.getElementById("selectCat").value !== "") {
+    validateBtn.classList.add("active");
+  } else {
+    resetSubmitBtnColor();
+  }
+};
+function resetSubmitBtnColor(){
+    validateBtn.classList.remove("active");
+};
+
+// build options to select category
+fetch(`${UrlApi}categories`).then((resp) => {
+  if (resp.ok) {
+    resp.json().then((category) => {
+      for (let count = 0; count <= category.length - 1; count++) {
+        // create radio INPUT
+        const objectOption = document.createElement("option");
+        objectOption.value = category[count].id;
+        objectOption.innerHTML = category[count].name;
+
+        // add INPUT + LABEL elements
+        const selCat = document.getElementById("selectCat");
+        selCat.appendChild(objectOption);
+      }
+    });
+  }
+});
+
+/////////////////////////////
+/////// Add new work ///////
+///////////////////////////
+const btnAjouterProjet = document.querySelector(".add-work");
+btnAjouterProjet.addEventListener("click", (event) => {
+  addWork(event);
+});
+
+async function addWork(event) {
+  event.preventDefault();
+  const title = document.querySelector(".js-title").value;
+  const categoryId = document.querySelector(".js-categoryId").value;
+  const image = document.querySelector(".js-image").files[0];
+
+  if (title === "" || categoryId === "" || image === undefined) {
+    alert("Merci de remplir tous les champs");
+    return;
+  } else {
+    let formData = new FormData();
+    formData.append("title", title);
+    formData.append("category", categoryId);
+    formData.append("image", image);
+
+    await fetch(`${UrlApi}works`, {
+      method: "POST",
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+      body: formData
+    }).then((resp) =>{
+      if (resp.status === 201) {
+        resp.json().then((data) => {
+          event.preventDefault();
+          addToWorksData(data);
+          alert("Projet " + `${title}` + " ajouté avec succès");
+          closeModal();
+        });
+      } else if (resp.status === 400) {
+        alert("Merci de remplir tous les champs");
+      } else if (resp.status === 500) {
+        alert("Erreur serveur");
+      } else if (resp.status === 401) {
+        alert("Vous n'êtes pas autorisé à ajouter un projet");
+        window.location.href = "login.html";
+      };
+    });
+  };
+};
+// Push new work
+function addToWorksData(data) {
+  allWorks.push(data);
+  displayAllWorks(allWorks);
+}

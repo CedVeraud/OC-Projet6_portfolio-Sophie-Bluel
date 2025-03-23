@@ -1,9 +1,9 @@
 const UrlApi = "http://localhost:5678/api/";
-const callData = fetch(`${UrlApi}works`);
-const callCat = fetch(`${UrlApi}categories`);
 let allWorks = [];
 
-////// GALLERY ///////
+///////////////////////////////
+////// DISPLAY GALLERY ///////
+///////////////////////////////
 const gallery = document.querySelector(".gallery");
 // Create gallery elements
 function displayWork(work) {
@@ -22,9 +22,10 @@ function displayAllWorks(data) {
     displayWork(data[i]);
   }        
 }
-
+/////////////////////////////
 ///// CATEGORY FILTERS /////
-callData.then((resp) => {
+///////////////////////////
+fetch(`${UrlApi}works`).then((resp) => {
   if (resp.ok){
     resp.json().then((data) => {
       displayAllWorks(data);
@@ -37,7 +38,8 @@ callData.then((resp) => {
 // build filters buttons
 function getCat(data){
   const nbSlides = data.length;
-  callCat.then((resp) => {
+  // get categories data
+  fetch(`${UrlApi}categories`).then((resp) => {
     if (resp.ok) {
       resp.json().then((category) => {
         for (let count = 0; count <= category.length - 1; count++) {
@@ -70,7 +72,7 @@ function getCat(data){
     }
   });
 };
-// Select ALL WORKS
+// Select ALL WORKS button
 const AllBtn = document.getElementById("btn_all");
 AllBtn.checked = true;
 AllBtn.addEventListener("click", () => {

@@ -15,14 +15,53 @@
 </head>
 <body>	
 <aside id="modal1" class="modal hidden" aria-hidden="true">
-	<div class="modal-wrapper">
-		<button class="close-modal">x</button>
-		<h3>Galerie photos</h3>
-		<div class="modal-page">
-			<div class="modal-gallery"></div>
-			<hr>
+	<div class="modal_wrapper">
+		<nav class="modal_nav">	
+			<button class="close-modal">
+				<i class="fa-solid fa-xmark"></i>
+			</button>		
+			<button class="back-modal hidden">
+				<i class="fa-solid fa-arrow-left"></i>
+			</button>
+		</nav>
+		<div class="modal_article1">
+			<h3>Galerie photos</h3>
+			<div class="modal_page">
+				<div class="modal_gallery"></div>
+				<hr>
+				<button class="btn_add">Ajouter une photo</button>
+			</div>
 		</div>
-
+		<article id="add_project" class="modal_article2 hidden">
+			<h3>Ajout photos</h3>
+			<div class="modal_page">
+				<form id="addPictureForm" class="modal_form">
+					<div class="modal_form-photo">
+						<i class="fa-solid fa-image"></i>
+						<label for="photo" id="labelPhoto">+ Ajouter photo</label>
+						<input type="file" name="photo" id="photo" class="js-image" accept="image/png, image/jpeg" required>
+						<p>jpg, png : 4mo max</p>
+					</div>
+					<div id="picturePreview" class="prev-pic hidden">
+						<img src="#" alt="votre image" id="picturePreviewImg">
+					</div>
+		
+					<div class="modal_form-title">
+						<label for="titre">Titre</label>
+						<input class="js-title" type="text" name="titre" id="titre">
+					</div>
+		
+					<div class="modal_form-id">
+						<label for="selectCat">Catégorie</label>
+						<select name="selectCat" id="selectCat" class="js-categoryId">
+							<option disabled selected value="">Sélectionner</option>						  
+						</select>
+					</div>
+					<hr>
+					<input type="submit" class="add-work" value="Valider">
+				</form>
+			</div>
+		</article>
 	</div>
 </aside>
 <aside id="editMode">

@@ -163,7 +163,8 @@ nav li a:hover {
 	margin: 60px 0;
 }
 
-.btn_option label {
+.btn_option label,
+.btn_add {
 height: 37px;
 background: transparent;
 border: 1px solid #1d6154;
@@ -180,16 +181,21 @@ line-height: 19px;
 text-align: center;
 font-style: normal;
 }
+.btn_add {
+	background: #1d6154;
+	color: white;
+	margin-top: 30px;
+}
 .btn_option label:hover,
 #filterSelect input:checked + .btn_option label,
 #btn_all:checked {
-background: #1d6154;
-color: white;
+	background: #1d6154;
+	color: white;
 }
 #filterSelect input{
 	display: none;
 }
-/* /end filters */
+
 /* FORMULAIRES */
 #contact, #login {
 	width: 50%;
@@ -199,7 +205,7 @@ color: white;
 	text-align: center;
 
 }
-#contact h2, #login h2{
+#contact h2, #login h2 {
 	margin-bottom: 20px;
 }
 #contact form, #login form {
@@ -231,7 +237,8 @@ input[type="submit"]{
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
+	cursor: pointer;
 }
 #error {
 	text-align: center;
@@ -270,6 +277,7 @@ footer nav ul {
 }
 #editMode {
 	position: fixed;
+	background-color: transparent;
 	z-index: 1;
 	width: 100%;
 	height: 50px;
@@ -280,6 +288,9 @@ footer nav ul {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+#editMode.bg-black{
+	background-color: black;
 }
 /****** MODAL *****/
 .modal{
@@ -296,30 +307,40 @@ footer nav ul {
 	background: rgba(0, 0, 0, 0.7);
 	text-align: center;
 }
-.modal-wrapper{
+.modal .hidden{
+	display: none;
+}
+.modal_wrapper{
 	width: 630px;
 	max-width: calc(100vw - 20px);
-	max-height: calc(100vh - 20px);
+	max-height: calc(100vh - 50px);
 	padding: 20px;
 	overflow: auto;
 	background: white;
 	border-radius: 10px;
 }
-.close-modal {
-	font-family: 'Syne';
-	font-size: 20px;
+.modal_nav{
+	display: flex;
+	flex-flow: row-reverse nowrap;
 	width: 95%;
-	text-align: right;
+	margin: 0 auto;
+	justify-content: space-between;
+}
+.back-modal {
+	font-size: 26px;
+}
+.close-modal {
+	font-size: 20px;
 }
 .modal h3 {
 	font-size: 26px;
 	padding: 30px 0;
 }
-.modal-page {
+.modal_page {
 	width: 75%;
 	margin: 20px auto;
 }
-.modal-gallery {
+.modal_gallery {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-gap: 10px;
@@ -336,9 +357,104 @@ footer nav ul {
 	border-radius: 5px;
 	font-size: 12px;
 }
-.modal-page hr{
+.modal_page hr{
 	color: #b3b3b3;
 }
-.modal-gallery img {
+.modal_gallery img {
 	width: 100%;
+}
+/* modal FORM */
+.modal_form {
+	display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal_form-photo {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	background-color: #E8F1F6;
+	width: 500px;
+	height: 180px;
+}  
+.modal_form-photo i {
+	color: #CBD6DC;
+	font-size: 70px;
+	font-weight: 100;
+	margin: 5px;
+}  
+.modal_form-photo input {
+	display: none;
+}  
+.modal_form-photo label {
+	font-family: "work sans";
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 200px;
+	height: 40px;
+	background-color: #CBD6DC;
+	color: #306685;
+	border-radius: 50px;
+	cursor: pointer;
+	margin-top: -10px;
+} 
+.modal_form-photo p {
+	font-size: 10px;
+}
+.prev-pic {
+	display: flex;
+	background-color: #E8F1F6;
+	height: 200px;
+	width: 100%;
+	justify-content: center;
+}
+.prev-pic img {
+	height: 100%;
+	width: 31%;
+	object-fit: cover;
+} 
+.modal_form-title {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+}
+.modal_form-title input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.modal_form-title label, .modal_form-id label {
+	text-align: left;
+	margin: 20px 0 8px;
+}
+.modal_form-id {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+}
+.modal_form-id select {
+	height: 50px;
+	border: none;
+	background-color: white;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.modal_form input[type=submit] {
+	font-size: 1.2em;
+	font-weight: 700;
+	color: white;
+	border: none;
+	height: 50px;
+	width: 250px;
+	text-align: center;
+	border-radius: 60px;
+}
+.modal_form .add-work{
+	background-color: #A7A7A7;
+}
+.modal_form .add-work.active{
+	background-color: #1D6154;
 }
