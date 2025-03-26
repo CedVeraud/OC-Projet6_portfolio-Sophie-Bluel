@@ -1,4 +1,3 @@
-
 ///////////////////////////
 /////// ADMIN MODE ///////
 /////////////////////////
@@ -15,6 +14,7 @@ function logOut() {
 function forbidden() {
   alert("Vous devez vous connecter");
 };
+
 /////////////////////////////////////
 /////// LOGIN --> Admin mode ///////
 ///////////////////////////////////
@@ -46,7 +46,7 @@ if (token) {
 };
 
 ///////////////////////////////
-/////// DISPLAY MODALE ///////
+/////// DISPLAY MODAL ////////
 /////////////////////////////
 let modalWindow = document.getElementById("modal1");
 const modalWrapper = document.querySelector(".modal_wrapper");
@@ -75,15 +75,14 @@ modalWrapper.addEventListener("click", stopProp);
 /////////////////////////////////////////
 /////// Display gallery in MODAL ///////
 ///////////////////////////////////////
-
 // Create modal_gallery elements
 function displayModalWork(work) {
   const MGcard = `
-    <figure id ="MP${work?.id}" class="modale-project">
+    <figure id ="MP${work?.id}" class="modal-project">
     <button id ="del${work?.id}" class="delete-project">
         <i class="fa-solid fa-trash-can"></i>
     </button>
-    <img src="${work?.imageUrl} "crossOrigin="anonymous">
+    <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}">
     </figure>
   `;
   modalGallery.insertAdjacentHTML("beforeend", MGcard);
@@ -111,19 +110,19 @@ function deleteProject(i) {
   })
   .then (resp => {
     console.log(resp);
-    // si statut incorrect
-    if (resp.status !== 204) {
-      alert("Vous devez vous connecter");
-    }
-    // si statut ok
-    else {
-      alert("projet " + `${i}` + " supprimé");
-      // rafraichir la page    
+
+    // si statut OK
+    if (resp.status === 204) {      
       allWorks = allWorks.filter(function(item) {
         return item.id !== i;
       });
-      getModalWorks();
+      alert("Le projet a été supprimé");
+      getModalWorks(allWorks);
       displayAllWorks(allWorks);
+    }
+    // sinon alerte
+    else {
+      alert("Vous devez vous connecter");
     };
   });
 };
@@ -154,12 +153,11 @@ backBtn.addEventListener("click", switchModalPage1);
 //////////////////////////
 let pictureInput;
 pictureInput = document.querySelector("#photo");
-
 //preview picture in form
 const prevImage = document.querySelector("#picturePreviewImg");
 const prevPic = document.querySelector("#picturePreview");
 const PicForm = document.querySelector(".modal_form-photo");
-
+// display picture preview
 function picturePreview() {
   const [file] = pictureInput.files;
   if (file) {
@@ -167,7 +165,7 @@ function picturePreview() {
     prevPic.classList.remove("hidden");
     PicForm.classList.add("hidden");
   }
-}
+};
 function resetPicturePreview() {
   prevPic.classList.add("hidden");
   PicForm.classList.remove("hidden");
@@ -175,20 +173,17 @@ function resetPicturePreview() {
 pictureInput.addEventListener("change", () => {
   picturePreview();
 });
-
 // change submit button color if form is completed
 const validateBtn = document.querySelector(".add-work");
 const form = document.getElementById("addPictureForm");
-
 form.addEventListener("change", () => {
   changeSubmitBtnColor();
 });
-
 function changeSubmitBtnColor(){
-  if (document.getElementById("titre").value !== "" && document.getElementById("photo").files[0] !== undefined && document.getElementById("selectCat").value !== "") {
-    validateBtn.classList.add("active");
-  } else {
+  if (document.getElementById("titre").value === "" || document.getElementById("photo").files[0] === undefined || document.getElementById("selectCat").value === "") {
     resetSubmitBtnColor();
+  } else {
+    validateBtn.classList.add("active");
   }
 };
 function resetSubmitBtnColor(){
@@ -196,23 +191,17 @@ function resetSubmitBtnColor(){
 };
 
 // build options to select category
-fetch(`${UrlApi}categories`).then((resp) => {
-  if (resp.ok) {
-    resp.json().then((category) => {
-      for (let count = 0; count <= category.length - 1; count++) {
-        // create radio INPUT
-        const objectOption = document.createElement("option");
-        objectOption.value = category[count].id;
-        objectOption.innerHTML = category[count].name;
-
-        // add INPUT + LABEL elements
-        const selCat = document.getElementById("selectCat");
-        selCat.appendChild(objectOption);
-      }
-    });
-  }
-});
-
+function selectCategory(cat) {
+  for (let count = 0; count <= cat.length - 1; count++) {
+    // create radio INPUT
+    const objectOption = document.createElement("option");
+    objectOption.value = cat[count].id;
+    objectOption.innerHTML = cat[count].name;
+    // add INPUT + LABEL elements
+    const selCat = document.getElementById("selectCat");
+    selCat.appendChild(objectOption);
+  };
+};
 /////////////////////////////
 /////// Add new work ///////
 ///////////////////////////
@@ -220,13 +209,11 @@ const btnAjouterProjet = document.querySelector(".add-work");
 btnAjouterProjet.addEventListener("click", (event) => {
   addWork(event);
 });
-
 async function addWork(event) {
   event.preventDefault();
   const title = document.querySelector(".js-title").value;
   const categoryId = document.querySelector(".js-categoryId").value;
   const image = document.querySelector(".js-image").files[0];
-
   if (title === "" || categoryId === "" || image === undefined) {
     alert("Merci de remplir tous les champs");
     return;
@@ -235,7 +222,6 @@ async function addWork(event) {
     formData.append("title", title);
     formData.append("category", categoryId);
     formData.append("image", image);
-
     await fetch(`${UrlApi}works`, {
       method: "POST",
       headers: {
@@ -255,7 +241,7 @@ async function addWork(event) {
       } else if (resp.status === 500) {
         alert("Erreur serveur");
       } else if (resp.status === 401) {
-        alert("Vous n'êtes pas autorisé à ajouter un projet");
+        alert("Vous n'êtes pas autorisé(e) à ajouter un projet");
         window.location.href = "login.html";
       };
     });
@@ -265,4 +251,4 @@ async function addWork(event) {
 function addToWorksData(data) {
   allWorks.push(data);
   displayAllWorks(allWorks);
-}
+};

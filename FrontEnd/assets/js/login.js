@@ -15,13 +15,13 @@ document.addEventListener("submit", (e) => {
     },
     body: JSON.stringify(form)
   }).then((resp) => {
-    if (resp.status !== 200) {
-        error.innerText = "Email ou mot de passe incorrect !";
-    } else {
+    if (resp.status === 200) {
       resp.json().then((data) => {
       sessionStorage.setItem("token", data.token); 
       window.location.replace("index.html");
       });
-    }
+    } else {
+      error.innerText = "Email ou mot de passe incorrect !";
+    };
   });
 });

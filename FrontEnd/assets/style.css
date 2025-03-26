@@ -182,9 +182,11 @@ text-align: center;
 font-style: normal;
 }
 .btn_add {
+	height: 45px;
 	background: #1d6154;
 	color: white;
 	margin-top: 30px;
+	padding: 12px 22px;
 }
 .btn_option label:hover,
 #filterSelect input:checked + .btn_option label,
@@ -280,7 +282,7 @@ footer nav ul {
 	background-color: transparent;
 	z-index: 1;
 	width: 100%;
-	height: 50px;
+	height: 0px;
 	margin: 0;
 	padding: 0;
 	top: 0;
@@ -291,6 +293,7 @@ footer nav ul {
 }
 #editMode.bg-black{
 	background-color: black;
+	height: 50px;
 }
 /****** MODAL *****/
 .modal{
@@ -347,10 +350,13 @@ footer nav ul {
 	grid-row-gap: 30px;
 	margin-bottom: 50px;
 }
+.modal-project {
+	position: relative;
+}
 .delete-project {
 	position: absolute;
-	margin-top: 5px;
-	margin-left: 60px;
+	top: 5px;
+	left: 60px;
 	padding: 3px 5px;
 	background-color: black;
 	color: white;
