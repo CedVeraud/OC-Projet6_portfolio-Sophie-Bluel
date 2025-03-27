@@ -2,7 +2,7 @@ const UrlApi = "http://localhost:5678/api/";
 let allWorks = [];
 let allCats = [];
 
-// get ALL WORKS
+// get ALL WORKS and store them
 fetch(`${UrlApi}works`).then((resp) => {
   if (resp.ok){
     resp.json().then((data) => {
@@ -11,7 +11,7 @@ fetch(`${UrlApi}works`).then((resp) => {
     });
   }
 });
-// get ALL CATEGORIES
+// get ALL CATEGORIES and store them
 fetch(`${UrlApi}categories`).then((resp) => {
   if (resp.ok){
     resp.json().then((category) => {
@@ -21,6 +21,7 @@ fetch(`${UrlApi}categories`).then((resp) => {
     });
   }
 });
+
 ///////////////////////////////
 ////// DISPLAY GALLERY ///////
 ///////////////////////////////
@@ -28,8 +29,8 @@ const gallery = document.querySelector(".gallery");
 // Create gallery elements
 function displayWork(work) {
   const card = `
-    <figure id="P${work?.id}" >
-    <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}" >
+    <figure id="P${work?.id}">
+      <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}" >
       <figcaption>${work?.title}</figcaption>
     </figure>
   `;
@@ -49,7 +50,6 @@ function displayAllWorks(data) {
 // build filters buttons
 function filterCats(cat){
   const nbSlides = allWorks.length;
-  // get categories data
   for (let count = 0; count <= cat.length - 1; count++) {
     // create radio INPUT
     const objectInput = document.createElement("input");
@@ -60,7 +60,7 @@ function filterCats(cat){
     const objectLabel = document.createElement("div");
     objectLabel.className = "btn_option"
     objectLabel.innerHTML = `<label for="${cat[count].name}">${cat[count]?.name}</label>`;
-    // ON CLICK
+    // CLICK on label
     objectLabel.onclick = function () {                                 
       // Clear gallery
       gallery.innerHTML = "";
@@ -79,7 +79,9 @@ function filterCats(cat){
 };
 // Select ALL WORKS button
 const AllBtn = document.getElementById("btn_all");
+// default status
 AllBtn.checked = true;
+// Display allWorks on click
 AllBtn.addEventListener("click", () => {
   displayAllWorks(allWorks);
 });

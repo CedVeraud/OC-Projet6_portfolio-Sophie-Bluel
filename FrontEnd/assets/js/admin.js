@@ -10,7 +10,7 @@ function logOut() {
   // reload default page
   logMenu.href = "";
 };
-// Advice if button "modifier" is not hidden //
+// Advice if not connected //
 function forbidden() {
   alert("Vous devez vous connecter");
 };
@@ -23,7 +23,9 @@ const modifBtn = document.querySelector(".admin_modif-btn");
 const editBtn = document.querySelector(".admin_edit-btn");
 const editMode = document.getElementById("editMode");
 
+// if token is stored
 if (token) {
+  // display EDIT Mode elements
   logMenu.innerText = "logout";
   logMenu.href = "#";
   logMenu.addEventListener("click", logOut);
@@ -31,12 +33,14 @@ if (token) {
   editMode.classList.add("bg-black");;
   editBtn.classList.remove("hidden");
   modifBtn.classList.remove("hidden");
+  // Click on button to open modal
   modifBtn.addEventListener("click", (e) => {
       e.preventDefault();
       openModal();
   });
   console.log("connected");
 } else {
+    // if token is not stored access to EDIT Mode is restricted
   modifBtn.href = "";
   modifBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -79,10 +83,10 @@ modalWrapper.addEventListener("click", stopProp);
 function displayModalWork(work) {
   const MGcard = `
     <figure id ="MP${work?.id}" class="modal-project">
-    <button id ="del${work?.id}" class="delete-project">
+      <button id ="del${work?.id}" class="delete-project">
         <i class="fa-solid fa-trash-can"></i>
-    </button>
-    <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}">
+      </button>
+      <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}">
     </figure>
   `;
   modalGallery.insertAdjacentHTML("beforeend", MGcard);
@@ -110,17 +114,17 @@ function deleteProject(i) {
   })
   .then (resp => {
     console.log(resp);
-
-    // si statut OK
-    if (resp.status === 204) {      
+    // if status OK 
+    if (resp.status === 204) {
+      // filter the array and return true or false
       allWorks = allWorks.filter(function(item) {
         return item.id !== i;
       });
       alert("Le projet a été supprimé");
+      // refresh displays
       getModalWorks(allWorks);
       displayAllWorks(allWorks);
     }
-    // sinon alerte
     else {
       alert("Vous devez vous connecter");
     };
@@ -134,17 +138,18 @@ const addBtn = document.querySelector(".btn_add");
 const backBtn = document.querySelector(".back-modal");
 const modalArticle1 = document.querySelector(".modal_article1");
 const modalArticle2 = document.querySelector(".modal_article2");
-
+// Modal page 1 (thumbs)
 function switchModalPage1() {
   modalArticle1.classList.remove("hidden");
   backBtn.classList.add("hidden");
   modalArticle2.classList.add("hidden");
-}
+};
+// Modal page 2 (form)
 function switchModalPage2() {
   modalArticle1.classList.add("hidden");
   backBtn.classList.remove("hidden");
   modalArticle2.classList.remove("hidden");
-}
+};
 addBtn.addEventListener("click", switchModalPage2);
 backBtn.addEventListener("click", switchModalPage1); 
 
@@ -157,7 +162,7 @@ pictureInput = document.querySelector("#photo");
 const prevImage = document.querySelector("#picturePreviewImg");
 const prevPic = document.querySelector("#picturePreview");
 const PicForm = document.querySelector(".modal_form-photo");
-// display picture preview
+// display preview for the new picture
 function picturePreview() {
   const [file] = pictureInput.files;
   if (file) {
@@ -166,6 +171,7 @@ function picturePreview() {
     PicForm.classList.add("hidden");
   }
 };
+// 
 function resetPicturePreview() {
   prevPic.classList.add("hidden");
   PicForm.classList.remove("hidden");
@@ -206,22 +212,27 @@ function selectCategory(cat) {
 /////// Add new work ///////
 ///////////////////////////
 const btnAjouterProjet = document.querySelector(".add-work");
+// Listen click on submit button
 btnAjouterProjet.addEventListener("click", (event) => {
   addWork(event);
 });
+// 
 async function addWork(event) {
   event.preventDefault();
   const title = document.querySelector(".js-title").value;
   const categoryId = document.querySelector(".js-categoryId").value;
   const image = document.querySelector(".js-image").files[0];
+  // If any field is empty > alert
   if (title === "" || categoryId === "" || image === undefined) {
     alert("Merci de remplir tous les champs");
     return;
   } else {
+    // If all the form in full > build formData
     let formData = new FormData();
     formData.append("title", title);
     formData.append("category", categoryId);
     formData.append("image", image);
+    // Post the form data
     await fetch(`${UrlApi}works`, {
       method: "POST",
       headers: {
@@ -229,13 +240,17 @@ async function addWork(event) {
       },
       body: formData
     }).then((resp) =>{
+      // if statut is ok
       if (resp.status === 201) {
         resp.json().then((data) => {
           event.preventDefault();
+          // push new data
           addToWorksData(data);
           alert("Projet " + `${title}` + " ajouté avec succès");
+          // cloe modal ( > reset)
           closeModal();
         });
+        // 
       } else if (resp.status === 400) {
         alert("Merci de remplir tous les champs");
       } else if (resp.status === 500) {
@@ -247,7 +262,7 @@ async function addWork(event) {
     });
   };
 };
-// Push new work
+// Push new work and display
 function addToWorksData(data) {
   allWorks.push(data);
   displayAllWorks(allWorks);

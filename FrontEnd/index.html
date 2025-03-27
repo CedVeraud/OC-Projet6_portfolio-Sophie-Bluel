@@ -13,9 +13,11 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
-<body>	
+<body>
+<!-- MODALE -->
 <aside id="modal1" class="modal hidden" aria-hidden="true">
 	<div class="modal_wrapper">
+		<!-- MODALE NAVIGATION -->
 		<nav class="modal_nav">	
 			<button class="close-modal">
 				<i class="fa-solid fa-xmark"></i>
@@ -24,6 +26,7 @@
 				<i class="fa-solid fa-arrow-left"></i>
 			</button>
 		</nav>
+		<!-- MODALE PAGE 1 (gallery + delete) -->		
 		<div class="modal_article1">
 			<h3>Galerie photos</h3>
 			<div class="modal_page">
@@ -32,6 +35,7 @@
 				<button class="btn_add">Ajouter une photo</button>
 			</div>
 		</div>
+		<!-- MODALE PAGE 2 (add project form) -->
 		<div id="add_project" class="modal_article2 hidden">
 			<h3>Ajout photos</h3>
 			<div class="modal_page">
@@ -64,12 +68,15 @@
 		</div>
 	</div>
 </aside>
+<!-- /END MODALE -->
+<!-- EDIT MODE BAR -->
 <aside id="editMode">
 	<a href="#portfolio" class="admin_edit-btn hidden" aria-hidden="true">
 		<i class="fa-solid fa-pen-to-square"></i>
 		<span>Mode édition</span>
 	</a>
 </aside>
+<!-- /END EDIT MODE -->
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -101,12 +108,14 @@
 				<span>Modifier</span>
 			</a>
 		</div>
+		<!-- FILTERS BUTTONS -->
 		<div id="filterSelect">
 			<input type="radio" id="btn_all" name="worksFilters">
 			<div class="btn_option">
 				<label class="selectBtn" for="btn_all">Tous</label>
 			</div>
 		</div>
+		<!-- /END FILTERS -->
 		<div class="gallery"></div>
 	</section>
 	<section id="contact">

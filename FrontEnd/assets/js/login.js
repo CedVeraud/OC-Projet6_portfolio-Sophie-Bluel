@@ -7,7 +7,7 @@ document.addEventListener("submit", (e) => {
     email: document.getElementById("email").value,
     password: document.getElementById("password").value,
   };
-
+  // call API
   fetch(`${UrlApi}users/login`, {
     method: "POST",
     headers: {
@@ -15,10 +15,13 @@ document.addEventListener("submit", (e) => {
     },
     body: JSON.stringify(form)
   }).then((resp) => {
+    //if status OK
     if (resp.status === 200) {
       resp.json().then((data) => {
-      sessionStorage.setItem("token", data.token); 
-      window.location.replace("index.html");
+        // set and store item
+        sessionStorage.setItem("token", data.token);
+        // back to index page
+        window.location.replace("index.html");
       });
     } else {
       error.innerText = "Email ou mot de passe incorrect !";
